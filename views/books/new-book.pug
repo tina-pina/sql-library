@@ -1,0 +1,18 @@
+extends ../layout
+
+block content
+  h1= title
+  
+  if is_title_missing || is_author_missing
+    h2= msg
+  if is_title_missing
+    h3= "please provide a title"
+  if is_author_missing
+    h3= "please provide an author"
+  
+
+  form(action="/books/new", method="post")
+    include form
+    input(type="submit")
+    p
+      a(class="button" href="/books") Cancel
