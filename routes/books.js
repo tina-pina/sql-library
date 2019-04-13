@@ -10,7 +10,6 @@ let Book = require("../models").Book;
 
 
 /* GET /books - Shows the full list of books */
-
 router.get('/', function (req, res, next) {
     Book.findAll({}).then(function (books) {
         res.render('books/index', {
@@ -21,9 +20,7 @@ router.get('/', function (req, res, next) {
     });;
 });
 
-
 /* GET /books/new - Shows the create new book form */
-
 router.get('/new', function (req, res, next) {
     res.render('books/new-book', { book: Book.build(), title: "New Book" });
 });
@@ -56,7 +53,10 @@ router.post('/new', function (req, res, next) {
 router.get('/:id', function (req, res, next) {
     Book.findOne({ where: { id: req.params.id } })
         .then(book => {
-            if (!book) res.redirect("/")
+            if (!book) {
+                let err = new Error("book does not exist")
+                next(err)
+            }
             res.render('books/update-book', { book: book, title: "Update Book" })
         })
 });
@@ -81,7 +81,10 @@ router.post("/:id", function (req, res, next) {
 
     Book.findOne({ where: { id: req.params.id } })
         .then(book => {
-            if (!book) res.redirect("/")
+            if (!book) {
+                let err = new Error("book does not exist")
+                next(err)
+            }
 
             book.title = req.body.title;
             book.author = req.body.author;
@@ -90,7 +93,6 @@ router.post("/:id", function (req, res, next) {
             book.save()
 
             res.redirect("/books/");
-
         })
 });
 
@@ -104,17 +106,5 @@ router.post("/:id/delete", function (req, res, next) {
             res.redirect("/books/");
         })
 });
-
-
-
-
-
-
-
-
-
-
-
-
 
 module.exports = router;

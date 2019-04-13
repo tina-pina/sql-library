@@ -4,7 +4,7 @@ block content
   h1= title
   
   if is_title_missing || is_author_missing
-    h2= msg
+    h2(style={color: 'red'})= msg
   if is_title_missing
     h3= "please provide a title"
   if is_author_missing
